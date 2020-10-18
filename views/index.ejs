@@ -1,0 +1,14 @@
+<h1>List of Dinos</h1>
+<form method="GET" action="/dinosaurs">
+    <label for="nameFilter">Filter by Name:</label>
+    <!-- the name below is the key value of the query  the value is the input-->
+    <input type="text" id="nameFilter" name="nameFilter">
+    <input type="submit">
+</form>
+<ul>
+    <% dinosaurs.forEach(dino=>{ %>
+    <li>
+        <%= dino.name %> is an <%= dino.type %> 
+    </li>
+<%}) %> 
+</ul>

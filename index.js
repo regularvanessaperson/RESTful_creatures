@@ -21,11 +21,11 @@ app.get("/prehistoric_creatures", (req,res)=>{
     console.log(creatureData)// convert string into an array
 
     //handle a query string if there is one
-    console.log(req.query.imageFilter)
-    let imageFilter = req.query.imageFilter
-    if(imageFilter){// reassign dinoData to only be an array of dinos whose name matches the query string name (and make it ignore case)
+    console.log(req.query.nameFilter)
+    let nameFilter = req.query.nameFilter
+    if(nameFilter){// reassign dinoData to only be an array of dinos whose name matches the query string name (and make it ignore case)
         creatureData = creatureData.filter((creature)=>{
-            return creature.name.toLowerCase()  === imageFilter.toLocaleLowerCase()
+            return creature.type.toLowerCase()  === nameFilter.toLocaleLowerCase()
         })
     }
     res.render("prehistoric_creatures/index.ejs", {creatures: creatureData})

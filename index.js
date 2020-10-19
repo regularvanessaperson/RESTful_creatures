@@ -13,6 +13,23 @@ app.get("/", (req,res)=>{
     res.render("home")
 })
 
+//CREATURE INDEX
+app.get("/prehistoric_creatures", (req,res)=>{
+    let creatures = fs.readFileSync("./prehistoric_creatures.json")
+    //take the text form dinosaurs.json and store it in a variable
+    let creatureData = JSON.parse(creatures)
+    console.log(creatureData)// convert string into an array
+
+    // //handle a query string if there is one
+    // console.log(req.query.imageFilter)
+    // let imageFilter = req.query.imageFilter
+    // if(imageFilter){// reassign dinoData to only be an array of dinos whose name matches the query string name (and make it ignore case)
+    //     creatureData = creatureData.filter((creature)=>{
+    //         return creature.name.toLowerCase()  === imageFilter.toLocaleLowerCase()
+    //     })
+    // }
+    res.render("prehistoric_creatures/index.ejs", {creatures: creatureData})
+})
 
 //DINO INDEX ROUTE
 app.get("/dinosaurs", (req,res)=>{
@@ -29,8 +46,14 @@ app.get("/dinosaurs", (req,res)=>{
             return dino.name.toLowerCase()  === nameFilter.toLocaleLowerCase()
         })
     }
-    res.render("index.ejs", {dinosaurs: dinoData})
+    res.render("dinosaurs/index.ejs", {dinosaurs: dinoData})
 })
+
+//CREATURE NEW ROUTE
+app.get("/prehistoric_creatures/new", (req,res)=>{
+    res.render("new")
+})
+
 //DINO NEW ROUTE
 app.get("/dinosaurs/new", (req,res)=>{
     res.render("new")

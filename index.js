@@ -20,14 +20,14 @@ app.get("/prehistoric_creatures", (req,res)=>{
     let creatureData = JSON.parse(creatures)
     console.log(creatureData)// convert string into an array
 
-    // //handle a query string if there is one
-    // console.log(req.query.imageFilter)
-    // let imageFilter = req.query.imageFilter
-    // if(imageFilter){// reassign dinoData to only be an array of dinos whose name matches the query string name (and make it ignore case)
-    //     creatureData = creatureData.filter((creature)=>{
-    //         return creature.name.toLowerCase()  === imageFilter.toLocaleLowerCase()
-    //     })
-    // }
+    //handle a query string if there is one
+    console.log(req.query.imageFilter)
+    let imageFilter = req.query.imageFilter
+    if(imageFilter){// reassign dinoData to only be an array of dinos whose name matches the query string name (and make it ignore case)
+        creatureData = creatureData.filter((creature)=>{
+            return creature.name.toLowerCase()  === imageFilter.toLocaleLowerCase()
+        })
+    }
     res.render("prehistoric_creatures/index.ejs", {creatures: creatureData})
 })
 
@@ -51,13 +51,25 @@ app.get("/dinosaurs", (req,res)=>{
 
 //CREATURE NEW ROUTE
 app.get("/prehistoric_creatures/new", (req,res)=>{
-    res.render("new")
+    res.render("prehistoric_creatures/new")
 })
 
 //DINO NEW ROUTE
 app.get("/dinosaurs/new", (req,res)=>{
-    res.render("new")
+    res.render("dinosaurs/new")
 })
+
+//CREATURE SHOW ROUTE
+app.get("/prehistoric_creatures/:idx", (req,res) =>{
+    let creatures = fs.readFileSync("./prehistoric_creatures.json")
+    let creatureData = JSON.parse(creatures)
+    //get array index from url parameter
+    let creatureIndex = req.params.idx
+
+    console.log(creatureData[creatureIndex])
+    res.render("prehistoric_creatures/show", {creature: creatureData[creatureIndex], creatureID: creatureIndex})
+})
+
 // DINO SHOW ROUTE
 app.get("/dinosaurs/:idx", (req,res) =>{
     let dinosaurs = fs.readFileSync("./dinosaurs.json")
@@ -66,7 +78,20 @@ app.get("/dinosaurs/:idx", (req,res) =>{
     let dinoIndex = req.params.idx
 
     console.log(dinoData[dinoIndex])
-    res.render("show", {dino: dinoData[dinoIndex], dinoID: dinoIndex})
+    res.render("dinosarus/show", {dino: dinoData[dinoIndex], dinoID: dinoIndex})
+})
+
+//PREHISTORIC CREATURE POST ROUTE
+app.post("/prehistoric_creatures", (req,res)=>{
+    let creatures = fs.readFileSync("./prehistoric_creatures.json")
+    let creatureData = JSON.parse(creatures)
+    creatureData.push(req.body)
+    //save the new creatureData array to the prehistoric_creatures.json file
+    //JSON.stringify does the opposite of JSON.parse
+    fs.writeFileSync("./prehistoric_creatures.json", JSON.stringify(creatureData))
+    //rederect the GET dinosarurs route (index)
+    res.redirect("/prehistoric_creatures")
+    console.log(req.body)
 })
 
 //DINO POST ROUTE

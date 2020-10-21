@@ -3,8 +3,9 @@ const express = require("express")
 const app = express()
 const ejsLayouts = require("express-ejs-layouts")
 const fs = require("fs")
+// const methodOverride = require("method-override")
 
-
+// app.use(methodOverride("_method"))
 app.set("view engine", "ejs")
 app.use(ejsLayouts)
 //body-parser middleware
@@ -43,6 +44,24 @@ app.post("/prehistoric_creatures", creatureController)
 
 //DINO POST ROUTE
 app.post("/dinosaurs", dinoController)
+
+//DINO EDIT ROUTE
+app.get("/dinosaurs/edit/:idx", dinoController)
+
+//PREHISTORIC CREATURE POST ROUTE
+app.get("/prehistoric_creatures/edit/:idx", creatureController)
+
+app.put("/dinosaurs/:idx", dinoController)
+
+app.put("/prehistoric_creatures/:idx", creatureController)
+
+app.use("/dinosaurs", dinoController)
+
+app.use("/prehistoric_creatures", creatureController)
+
+app.delete("/dinosaurs", dinoController)
+
+app.delete("/prehistoric_creatures", creatureController)
 
 app.listen(8000, ()=>{
     console.log("you're listening ot port 8k")
